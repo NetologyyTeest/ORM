@@ -1,5 +1,5 @@
-import sq as sq
-import sqlalchemy
+import psycopg2
+import sqlalchemy as sq
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -33,8 +33,7 @@ class Stock(Base):
     count = sq.Column(sq.Integer, nullable=False)
     book = relationship(Book, backref="stock")
     shop = relationship(Shop, backref="stock")
-
-    sale = relationship('sale', backref='stock')
+    sale = relationship('Sale', backref='stock')
 class Sale(Base):
     __tablename__ = 'sale'
     id = sq.Column(sq.Integer, primary_key=True)
@@ -42,7 +41,7 @@ class Sale(Base):
     date_sale = sq.Column(sq.DateTime, nullable=False)
     id_stock = sq.Column(sq.Integer, sq.ForeignKey('stock.id'), nullable=False)
     count = sq.Column(sq.Integer, nullable=False)
-    book = relationship(Book, backref="sale")
+
 
 def create_tables(engine):
     Base.metadata.drop_all(engine)
